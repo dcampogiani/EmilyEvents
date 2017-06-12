@@ -2,6 +2,7 @@ package com.danielecampogiani.emilyevents
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.danielecampogiani.emilyevents.location.LocationFragment
 import com.danielecampogiani.emilyevents.location.LocationState
 
@@ -21,12 +22,17 @@ class MainActivity : AppCompatActivity(), LocationFragment.OnFragmentInteraction
             val locationFragment = LocationFragment.newInstance()
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_container, locationFragment)
+                    .replace(R.id.main_container, locationFragment, LOCATION_FRAGMENT_TAG)
                     .commit()
         }
     }
 
     override fun onLocationReceived(location: LocationState.Result) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, location.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        supportFragmentManager.findFragmentByTag(LOCATION_FRAGMENT_TAG)?.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

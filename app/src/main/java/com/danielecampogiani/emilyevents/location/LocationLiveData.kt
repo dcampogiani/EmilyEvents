@@ -15,7 +15,7 @@ class LocationLiveData @Inject constructor(context: Context) : LiveData<Location
     private val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     private val locationListener: LocationListener = object : SimpleLocationListener() {
-        override fun onLocationChanged(location: Location?) {
+        override fun onLocationChanged(location: Location) {
             value = location
         }
     }
