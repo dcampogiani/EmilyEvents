@@ -1,6 +1,6 @@
 package com.danielecampogiani.emilyevents.dagger
 
-import com.danielecampogiani.emilyevents.location.LocationViewModel
+import com.danielecampogiani.emilyevents.events.EventsViewModel
 import com.danielecampogiani.network.facebook.NetworkModule
 import dagger.Component
 import javax.inject.Singleton
@@ -9,5 +9,5 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class, NetworkModule::class))
 interface AppComponent {
 
-    fun inject(locationViewModel: LocationViewModel)
+    fun inject(eventsViewModel: EventsViewModel)
 }

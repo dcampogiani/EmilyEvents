@@ -13,7 +13,7 @@ import utils.SimpleLocationListener
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
 
-    val locationLiveData: MutableLiveData<LocationState> = MutableLiveData()
+    private val locationLiveData: MutableLiveData<LocationState> = MutableLiveData()
     private val locationManager: LocationManager = application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private val locationListener: LocationListener = object : SimpleLocationListener() {
         override fun onLocationChanged(location: Location) {
