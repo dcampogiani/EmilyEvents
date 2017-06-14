@@ -4,36 +4,36 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.content.Context
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import utils.SimpleLocationListener
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import java.lang.Exception
 
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val locationLiveData: MutableLiveData<LocationState> = MutableLiveData()
-    private val locationManager: LocationManager = application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    private val locationListener: LocationListener = object : SimpleLocationListener() {
-        override fun onLocationChanged(location: Location) {
-            locationLiveData.value = LocationState.Result(location.latitude, location.longitude)
-            locationManager.removeUpdates(this)
-        }
-    }
+    private val locationProviderClient = LocationServices.getFusedLocationProviderClient(application)
 
     init {
         locationLiveData.value = LocationState.Loading
     }
 
+    private val locationListener = OnSuccessListener<Location> { location -> location?.let { locationLiveData.value = LocationState.Result(it.latitude, it.longitude) } }
+
 
     fun getLocation(): LiveData<LocationState> {
-        locationManager.removeUpdates(locationListener)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+        locationProviderClient.lastLocation.addOnSuccessListener { locationListener }
+                .addOnFailureListener(object : OnFailureListener {
+                    override fun onFailure(p0: Exception) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                })
         return locationLiveData
     }
 
     override fun onCleared() {
-        locationManager.removeUpdates(locationListener)
+        //locationProviderClient clear
     }
 }
