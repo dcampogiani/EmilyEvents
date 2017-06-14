@@ -6,9 +6,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.location.Location
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
-import java.lang.Exception
+import com.google.android.gms.tasks.Task
 
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,16 +24,17 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
 
 
     fun getLocation(): LiveData<LocationState> {
-        locationProviderClient.lastLocation.addOnSuccessListener { locationListener }
-                .addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(p0: Exception) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-                })
+        locationProviderClient.lastLocation.addOnCompleteListener(object : OnCompleteListener<Location> {
+            override fun onComplete(task: Task<Location>) {
+                //TODO check if task is successful
+                val result = task.result
+                locationLiveData.value = LocationState.Result(result.latitude, result.longitude)
+            }
+        })
         return locationLiveData
     }
 
     override fun onCleared() {
-        //locationProviderClient clear
+        //locationProviderClient clear?
     }
 }
