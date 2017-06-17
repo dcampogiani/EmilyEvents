@@ -43,9 +43,9 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.0.0'
 
 
-    implementation "android.arch.lifecycle:runtime:1.0.0-alpha2"
-    implementation "android.arch.lifecycle:extensions:1.0.0-alpha2"
-    kapt "android.arch.lifecycle:compiler:1.0.0-alpha2"
+    implementation "android.arch.lifecycle:runtime:1.0.0-alpha3"
+    implementation "android.arch.lifecycle:extensions:1.0.0-alpha3"
+    kapt "android.arch.lifecycle:compiler:1.0.0-alpha3"
 
 
 
@@ -57,7 +57,7 @@ dependencies {
     implementation "com.mindorks:placeholderview:0.6.2"
     implementation "com.squareup.picasso:picasso:2.5.2"
 
-    implementation "com.google.android.gms:play-services-location:11.0.0"
+    implementation "com.google.android.gms:play-services-location:11.0.1"
 
 
 }
