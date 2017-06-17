@@ -31,7 +31,7 @@ class EventsViewModel(application: Application) : AndroidViewModel(application) 
 
                     override fun onResponse(call: Call<FacebookResult>, response: Response<FacebookResult>) {
                         if (response.isSuccessful) {
-                            eventsLiveData.value = response.body()?.events?.let { EventsState.Result(it) }
+                            eventsLiveData.value = response.body()?.events?.let { EventsState.Result(it.distinctBy { event -> event.name })}
                         } else {
                             eventsLiveData.value = response.errorBody()?.string()?.let { EventsState.Error(it) }
                         }
