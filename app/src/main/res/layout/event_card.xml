@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="50dp">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/ra"
@@ -18,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:gravity="center|start"
             android:orientation="vertical">
@@ -32,25 +31,38 @@
 
             <TextView
                 android:id="@+id/eventCardTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
                 android:textColor="@color/primary_text"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
                 tools:text="Depeche Mode - Stadio Renato Dall'Ara, Bologna 29/6/17" />
 
             <TextView
-                android:id="@+id/eventCardDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/eventCardDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:textStyle="normal"
-                tools:text="AMEX Pre-Sale: October 13, 9:00am - October 15, 9:00am\n\nGeneral On-Sale: October 15, 10:00am\n\nPrezzi compresi di diritti di prevendita:\nCurva non numerata: 51,75 euro\nDistinti non numerati: 57,50 euro\nPrato: 59,80 euro\nPrato Gold: 69 euro\nTribuna Numerata: 74,75 euro\n\nSabato 15 ottobre Ore 10.00 apertura vendite su ticketone.it \nApertura vendite da Zamboni53 Store sabato 15 ottobre ore 11.00!!!\nClicca qui per tutte le info: http://www.zamboni53store.com/depeche-mode-aggiornamento-vendite/\n\nZamboni53 Store via zamboni 53/c (Bo)" />
+                tools:text="29/06" />
+
+            <TextView
+                android:id="@+id/eventCardLocation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/secondary_text"
+                android:textStyle="normal"
+                tools:text="Zamboni 53 Store - via Zamboni 53/C"
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </FrameLayout>

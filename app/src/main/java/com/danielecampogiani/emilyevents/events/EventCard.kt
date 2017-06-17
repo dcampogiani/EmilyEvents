@@ -8,6 +8,7 @@ import com.danielecampogiani.network.facebook.FacebookEvent
 import com.mindorks.placeholderview.Animation
 import com.mindorks.placeholderview.annotations.*
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
 
 
 @Animate(Animation.ENTER_LEFT_DESC)
@@ -21,8 +22,11 @@ class EventCard {
     @View(R.id.eventCardTitle)
     private lateinit var title: TextView
 
-    @View(R.id.eventCardDescription)
-    private lateinit var description: TextView
+    @View(R.id.eventCardDate)
+    private lateinit var date: TextView
+
+    @View(R.id.eventCardLocation)
+    private lateinit var location: TextView
 
     private var context: Context
     private var event: FacebookEvent
@@ -36,7 +40,11 @@ class EventCard {
     private fun onResolved() {
         Picasso.with(context).load(event.profilePicture).into(imageView)
         title.text = event.name
-        description.text = event.description
+        val df = SimpleDateFormat("dd/MM")
+        val formattedDate = df.format(event.startTime)
+        date.text = formattedDate
+        val venue = event.venue
+        location.text = "${venue.name} - ${venue.location.street}"
     }
 
 }

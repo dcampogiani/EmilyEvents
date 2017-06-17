@@ -4,11 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.location.Location
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,21 +16,16 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         locationLiveData.value = LocationState.Loading
     }
 
-    private val locationListener = OnSuccessListener<Location> { location -> location?.let { locationLiveData.value = LocationState.Result(it.latitude, it.longitude) } }
-
 
     fun getLocation(): LiveData<LocationState> {
-        locationProviderClient.lastLocation.addOnCompleteListener(object : OnCompleteListener<Location> {
-            override fun onComplete(task: Task<Location>) {
-                //TODO check if task is successful
+        locationProviderClient.lastLocation.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 val result = task.result
                 locationLiveData.value = LocationState.Result(result.latitude, result.longitude)
+            } else {
+                task.exception?.message?.let { locationLiveData.value = LocationState.Error(it) }
             }
-        })
+        }
         return locationLiveData
-    }
-
-    override fun onCleared() {
-        //locationProviderClient clear?
     }
 }

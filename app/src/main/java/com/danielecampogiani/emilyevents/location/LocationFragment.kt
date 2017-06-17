@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.danielecampogiani.emilyevents.R
 import kotlinx.android.synthetic.main.fragment_location.*
 
@@ -84,6 +85,8 @@ class LocationFragment : LifecycleFragment() {
                     animate(animationFile)
                 }
                 is LocationState.Result -> mListener?.onLocationReceived(it)
+
+                is LocationState.Error -> Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
             }
         })
     }

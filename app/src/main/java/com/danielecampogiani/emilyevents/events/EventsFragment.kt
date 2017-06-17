@@ -45,7 +45,7 @@ class EventsFragment : LifecycleFragment() {
         viewModel.getUILiveData(latitude, longitude).observe(this, Observer {
             when (it) {
                 is EventsState.Loading -> {
-                    animate("bounching_ball.json")
+                    animate("network_loading.json")
                 }
                 is EventsState.Result -> {
                     bindResult(it.events)
