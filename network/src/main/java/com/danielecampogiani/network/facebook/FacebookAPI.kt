@@ -10,7 +10,11 @@ class FacebookAPI @Inject constructor(retrofit: Retrofit) {
 
     private val retrofitFacebook: RetrofitFacebook = retrofit.create(RetrofitFacebook::class.java)
 
-    fun getEvents(latitude: String, longitude: String, distance: String?, sort: String?): Call<FacebookResult> {
+    fun getEvents(request: FacebookRequest): Call<FacebookResult> {
+        return getEvents(request.latitude, request.longitude, request.distance, request.sort.parameter)
+    }
+
+    private fun getEvents(latitude: String, longitude: String, distance: String?, sort: String?): Call<FacebookResult> {
         return retrofitFacebook.getEvents(latitude, longitude, distance, sort)
     }
 }
