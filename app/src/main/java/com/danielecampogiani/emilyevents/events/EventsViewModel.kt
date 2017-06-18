@@ -8,6 +8,7 @@ import com.danielecampogiani.emilyevents.EmilyEventsApp
 import com.danielecampogiani.network.facebook.FacebookAPI
 import com.danielecampogiani.network.facebook.FacebookRequest
 import com.danielecampogiani.network.facebook.FacebookResult
+import com.danielecampogiani.network.facebook.Sort
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,18 +23,27 @@ class EventsViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         EmilyEventsApp.appComponent.inject(this)
-        eventsLiveData.value = EventsState.Loading
     }
 
     fun getUILiveData(latitude: String, longitude: String): LiveData<EventsState> {
-
         request = FacebookRequest(latitude, longitude)
         doNetworkCall()
         return eventsLiveData
     }
 
+    fun changeSort(sort: Sort) {
+        request = request?.copy(sort = sort)
+        doNetworkCall()
+    }
+
+    fun changeDistance(distance: Int) {
+        request = request?.copy(distance = distance.toString())
+        doNetworkCall()
+    }
+
     private fun doNetworkCall() {
         request?.let {
+            eventsLiveData.value = EventsState.Loading
             facebookAPI.getEvents(it)
                     .enqueue(object : Callback<FacebookResult> {
 

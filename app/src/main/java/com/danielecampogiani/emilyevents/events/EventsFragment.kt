@@ -5,13 +5,19 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
+import android.support.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import com.danielecampogiani.emilyevents.R
 import com.danielecampogiani.network.facebook.FacebookEvent
+import com.danielecampogiani.network.facebook.Sort
 import com.mindorks.placeholderview.SwipeDecor
 import kotlinx.android.synthetic.main.fragment_events.*
+import utils.setFixedOnItemSelectedListener
 
 
 class EventsFragment : LifecycleFragment() {
@@ -45,7 +51,7 @@ class EventsFragment : LifecycleFragment() {
         viewModel.getUILiveData(latitude, longitude).observe(this, Observer {
             when (it) {
                 is EventsState.Loading -> {
-                    animate("network_loading.json")
+                    showLoading()
                 }
                 is EventsState.Result -> {
                     bindResult(it.events)
@@ -58,20 +64,83 @@ class EventsFragment : LifecycleFragment() {
 
     }
 
-    private fun bindResult(events: List<FacebookEvent>) {
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sheetBehavior = BottomSheetBehavior.from(bottom_refine)
 
-        swipeView.getBuilder()
+        fab.setOnClickListener {
+            if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
+
+        swipeView.builder
                 .setDisplayViewCount(3)
                 .setSwipeDecor(SwipeDecor()
                         .setPaddingTop(20)
                         .setRelativeScale(0.01f))
+
+        val adapter = ArrayAdapter.createFromResource(context, R.array.sort_by_array, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sort_spinner.adapter = adapter
+
+        sort_spinner.setFixedOnItemSelectedListener {
+
+            var sort: Sort = Sort.Popularity
+
+            if (it == 0) {
+                sort = Sort.Popularity
+            } else if (it == 1) {
+                sort = Sort.Time
+            } else if (it == 2) {
+                sort = Sort.Distance
+            } else if (it == 3) {
+                sort = Sort.Venue
+            }
+
+            viewModel.changeSort(sort)
+        }
+
+        distance_seek.max = 10000
+        distance_seek.progress = 1000
+        distance_text.text = "1000"
+        distance_seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                distance_text.text = progress.toString()
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                viewModel.changeDistance(distance_seek.progress)
+            }
+        })
+    }
+
+    private fun showLoading() {
+        TransitionManager.beginDelayedTransition(root)
+        animate("network_loading.json")
+        animation_view.visibility = View.VISIBLE
+        swipeView.visibility = View.INVISIBLE
+    }
+
+    private fun bindResult(events: List<FacebookEvent>) {
+        swipeView.removeAllViews()
+        TransitionManager.beginDelayedTransition(root)
 
         events.forEach {
             val eventCard = EventCard(context, it)
             swipeView.addView(eventCard)
         }
 
-        animation_view.visibility = View.GONE
+        swipeView.visibility = View.VISIBLE
+        animation_view.visibility = View.INVISIBLE
+        fab.visibility = View.VISIBLE
+        bottom_refine.visibility = View.VISIBLE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
