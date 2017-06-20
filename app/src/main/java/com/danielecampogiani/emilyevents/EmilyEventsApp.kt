@@ -4,6 +4,7 @@ import android.app.Application
 import com.danielecampogiani.emilyevents.dagger.AppComponent
 import com.danielecampogiani.emilyevents.dagger.AppModule
 import com.danielecampogiani.emilyevents.dagger.DaggerAppComponent
+import net.danlew.android.joda.JodaTimeAndroid
 
 
 class EmilyEventsApp : Application() {
@@ -15,5 +16,6 @@ class EmilyEventsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        JodaTimeAndroid.init(this)
     }
 }

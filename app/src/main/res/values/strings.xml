@@ -2,6 +2,7 @@
     <string name="app_name">EmilyEvents</string>
     <string name="sort_by">Sort by</string>
     <string name="distance_km">Distance (km)</string>
+    <string name="time">Time</string>
 
 
     <string-array name="sort_by_array">
@@ -9,6 +10,15 @@
         <item>Time</item>
         <item>Distance</item>
         <item>Venue</item>
+    </string-array>
+
+    <string-array name="time_refine_array">
+        <item>All</item>
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>This week</item>
+        <item>This weekend</item>
+        <item>Next week</item>
     </string-array>
 
 </resources>

@@ -5,10 +5,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.danielecampogiani.emilyevents.EmilyEventsApp
-import com.danielecampogiani.network.facebook.FacebookAPI
-import com.danielecampogiani.network.facebook.FacebookRequest
-import com.danielecampogiani.network.facebook.FacebookResult
-import com.danielecampogiani.network.facebook.Sort
+import com.danielecampogiani.network.facebook.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +36,12 @@ class EventsViewModel(application: Application) : AndroidViewModel(application) 
     fun changeDistance(distance: Int) {
         request = request?.copy(distance = distance.toString())
         doNetworkCall()
+    }
+
+    fun changeTime(time: Time) {
+        request = request?.copy(time = time)
+        doNetworkCall()
+
     }
 
     private fun doNetworkCall() {

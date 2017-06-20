@@ -15,6 +15,7 @@ import android.widget.SeekBar
 import com.danielecampogiani.emilyevents.R
 import com.danielecampogiani.network.facebook.FacebookEvent
 import com.danielecampogiani.network.facebook.Sort
+import com.danielecampogiani.network.facebook.Time
 import com.mindorks.placeholderview.SwipeDecor
 import kotlinx.android.synthetic.main.fragment_events.*
 import utils.setFixedOnItemSelectedListener
@@ -82,10 +83,9 @@ class EventsFragment : LifecycleFragment() {
                         .setPaddingTop(20)
                         .setRelativeScale(0.01f))
 
-        val adapter = ArrayAdapter.createFromResource(context, R.array.sort_by_array, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        sort_spinner.adapter = adapter
-
+        val sortAdapter = ArrayAdapter.createFromResource(context, R.array.sort_by_array, android.R.layout.simple_spinner_item)
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sort_spinner.adapter = sortAdapter
         sort_spinner.setFixedOnItemSelectedListener {
 
             var sort: Sort = Sort.Popularity
@@ -102,6 +102,32 @@ class EventsFragment : LifecycleFragment() {
 
             viewModel.changeSort(sort)
         }
+
+        val timeAdapter = ArrayAdapter.createFromResource(context, R.array.time_refine_array, android.R.layout.simple_spinner_item)
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        time_spinner.adapter = timeAdapter
+        time_spinner.setFixedOnItemSelectedListener {
+            val time: Time
+
+            if (it == 1) {
+                time = Time.today()
+            } else if (it == 2) {
+                time = Time.tomorrow()
+            } else if (it == 3) {
+                time = Time.thisWeek()
+            } else if (it == 4) {
+                time = Time.thisWeekEnd()
+            } else if (it == 5) {
+                time = Time.nextWeek()
+            } else {
+                time = Time.all()
+            }
+
+
+            viewModel.changeTime(time)
+        }
+
+
 
         distance_seek.max = 10000
         distance_seek.progress = 1000
