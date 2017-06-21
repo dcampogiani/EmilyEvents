@@ -1,6 +1,9 @@
 package com.danielecampogiani.network
 
 import com.danielecampogiani.network.facebook.FacebookResult
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 internal interface RetrofitFacebook {

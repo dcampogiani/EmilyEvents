@@ -1,16 +1,15 @@
 package com.danielecampogiani.network.facebook
 
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 class FacebookAPITest {
 
-    lateinit var sut : FacebookAPI
+    lateinit var sut: FacebookAPI
 
     @Before
     fun setUp() {
@@ -25,7 +24,8 @@ class FacebookAPITest {
 
     @Test
     fun getEvents() {
-        val call = sut.getEvents("44.4992192", "11.2616451", "1000", "popularity")
+        val request = FacebookRequest("44.4992192", "11.2616451", "1000")
+        val call = sut.getEvents(request)
         val response = call.execute()
         val body = response.body()
         assertNotNull(body)

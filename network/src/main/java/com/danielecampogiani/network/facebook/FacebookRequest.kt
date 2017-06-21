@@ -1,5 +1,7 @@
 package com.danielecampogiani.network.facebook
 
+import org.joda.time.DateTime
+
 
 data class FacebookRequest(val latitude: String,
                            val longitude: String,
